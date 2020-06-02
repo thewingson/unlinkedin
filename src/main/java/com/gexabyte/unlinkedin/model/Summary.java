@@ -22,7 +22,7 @@ public class Summary {
 
     @Id
     @GeneratedValue(generator = "SUMMARY_SEQ", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(sequenceName = "SUMMARY_SEQ", name = "SUMMARY_SEQ", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "SUMMARY_ID_SEQ", name = "SUMMARY_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "ABOUT", nullable = false)
@@ -34,8 +34,11 @@ public class Summary {
     @Column(name = "ACADEMIC_DEGREE", nullable = false)
     private String academicDegree;
 
-    @ManyToMany(mappedBy = "SUMMARIES")
-    private Set<String> skills = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "SUMMARY_SKILL",
+            joinColumns = {@JoinColumn(name = "SUMMARY_ID", foreignKey = @ForeignKey(name = "SUMMARY_FK"))},
+            inverseJoinColumns = {@JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "SKILL_FK"))})
+    private Set<Skill> skills = new HashSet<>();
 
     @Column(name = "EXPECTED_WAGE", nullable = false)
     private Integer expectedWage;

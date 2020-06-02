@@ -22,6 +22,7 @@ public class SummaryPOJO {
     private Long id;
     private String about;
     private String university;
+    private String academicDegree;
     private List<String> skills = new ArrayList<>();
     private Integer expectedWage;
 

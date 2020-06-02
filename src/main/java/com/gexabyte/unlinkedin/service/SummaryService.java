@@ -1,6 +1,7 @@
 package com.gexabyte.unlinkedin.service;
 
 import com.gexabyte.unlinkedin.model.Summary;
+import com.gexabyte.unlinkedin.pojo.SummaryPOJO;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ public interface SummaryService {
 
     Summary getOne(Long id);
     List<Summary> getAll();
-    void add(Summary summary);
-    void edit(Long id, Summary summary);
+    void add(SummaryPOJO summaryPOJO);
+    void edit(Long id, SummaryPOJO summaryPOJO);
     void delete(Long id);
 
 }

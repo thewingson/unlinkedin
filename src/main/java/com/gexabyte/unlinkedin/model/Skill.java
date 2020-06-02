@@ -30,8 +30,8 @@ public class Skill {
 
     @ManyToMany
     @JoinTable(name = "SUMMARY_SKILL",
-            joinColumns = {@JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "TASK_FK"))},
-            inverseJoinColumns = {@JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "SKILL_FK"))})
+            joinColumns = {@JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "SKILL_FK"))},
+            inverseJoinColumns = {@JoinColumn(name = "SUMMARY_ID", foreignKey = @ForeignKey(name = "SUMMARY_FK"))})
     private Set<Summary> summaries = new HashSet<>();
 
     @Override
