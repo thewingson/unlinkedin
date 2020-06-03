@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/summary")
 public class SummaryRest {
 
     private final SummaryService summaryService;
