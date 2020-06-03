@@ -9,6 +9,7 @@ import com.gexabyte.unlinkedin.service.SummaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,12 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public Summary getOne(Long id) {
-        return summaryRepo.findById(id).get();
+        Optional<Summary> summaryById = summaryRepo.findById(id);
+        if (summaryById.isPresent()){
+            return summaryById.get();
+        }else {
+            throw new RuntimeException("Summary not found!");
+        }
     }
 
     @Override
@@ -41,28 +47,26 @@ public class SummaryServiceImpl implements SummaryService {
         return summaryRepo.findAll();
     }
 
+    @Transactional
     @Override
     public void add(SummaryPOJO summaryPOJO) {
         List<Skill> skills = generateSkills(summaryPOJO);
 
         Summary summary = new Summary();
         summary.setAbout(summaryPOJO.getAbout());
-        summary.setUniversity(summaryPOJO.getUniversity());
-        summary.setAcademicDegree(summaryPOJO.getAcademicDegree());
         summary.getSkills().addAll(skills);
         summary.setExpectedWage(summaryPOJO.getExpectedWage());
 
         summaryRepo.save(summary);
     }
 
+    @Transactional
     @Override
     public void edit(Long id, SummaryPOJO summaryPOJO) {
         List<Skill> skills = generateSkills(summaryPOJO);
 
         summaryRepo.findById(id).ifPresent(summary -> {
             summary.setAbout(summaryPOJO.getAbout());
-            summary.setUniversity(summaryPOJO.getUniversity());
-            summary.setAcademicDegree(summaryPOJO.getAcademicDegree());
             summary.setExpectedWage(summaryPOJO.getExpectedWage());
             summary.getSkills().clear();
             summary.getSkills().addAll(skills);
@@ -70,6 +74,7 @@ public class SummaryServiceImpl implements SummaryService {
         });
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Optional<Summary> summary = summaryRepo.findById(id);

@@ -1,12 +1,13 @@
 package com.gexabyte.unlinkedin.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -18,6 +19,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Summary {
 
     @Id
@@ -28,13 +30,8 @@ public class Summary {
     @Column(name = "ABOUT", nullable = false)
     private String about;
 
-    @Column(name = "UNIVERSITY", nullable = false)
-    private String university;
-
-    @Column(name = "ACADEMIC_DEGREE", nullable = false)
-    private String academicDegree;
-
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JsonManagedReference
     @JoinTable(name = "SUMMARY_SKILL",
             joinColumns = {@JoinColumn(name = "SUMMARY_ID", foreignKey = @ForeignKey(name = "SUMMARY_FK"))},
             inverseJoinColumns = {@JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "SKILL_FK"))})
@@ -42,18 +39,5 @@ public class Summary {
 
     @Column(name = "EXPECTED_WAGE", nullable = false)
     private Integer expectedWage;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Summary summary = (Summary) o;
-        return Objects.equals(id, summary.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
 }
